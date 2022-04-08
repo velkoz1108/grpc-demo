@@ -4,9 +4,9 @@ import com.twang.proto.Greeting;
 import com.twang.proto.HelloWorldServiceGrpc;
 import com.twang.proto.Person;
 import io.grpc.stub.StreamObserver;
-import org.lognet.springboot.grpc.GRpcService;
+import net.devh.boot.grpc.server.service.GrpcService;
 
-@GRpcService
+@GrpcService
 public class HelloWorldServiceImpl extends HelloWorldServiceGrpc.HelloWorldServiceImplBase {
     @Override
     public void sayHello(Person request, StreamObserver<Greeting> responseObserver) {
