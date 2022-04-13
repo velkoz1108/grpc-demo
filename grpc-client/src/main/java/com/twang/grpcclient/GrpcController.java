@@ -25,7 +25,10 @@ public class GrpcController {
     public String hi(@RequestParam String firstName, @RequestParam String lastName) {
 
         Person person = Person.newBuilder().setFirstName(firstName).setLastName(lastName).build();
-        return stub.sayHello(person).getMessage();
+
+        String message = stub.sayHello(person).getMessage();
+        System.out.println("message from server = " + message);
+        return message;
     }
 
     @Autowired

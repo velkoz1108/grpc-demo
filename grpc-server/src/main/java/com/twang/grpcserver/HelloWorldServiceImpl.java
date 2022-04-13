@@ -10,6 +10,7 @@ import net.devh.boot.grpc.server.service.GrpcService;
 public class HelloWorldServiceImpl extends HelloWorldServiceGrpc.HelloWorldServiceImplBase {
     @Override
     public void sayHello(Person request, StreamObserver<Greeting> responseObserver) {
+        System.out.println("request from client = " + request);
         Greeting reply = Greeting.newBuilder().setMessage("Hello ==> " + request.getFirstName()).build();
         responseObserver.onNext(reply);
         responseObserver.onCompleted();

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+//指定在proto文件中定义的所有消息、枚举和服务在生成java类的时候都会生成对应的java类文件，而不是以内部类的形式出现。
+option java_multiple_files = true;
+
+//指定生成的java类所在的包， 如果在.proto文件中没有提供明确的java_package选项，
+//那么默认情况下，将使用proto包。如果没有生成java代码该选项默认是不生效的。
+option java_package = "com.twang.proto";
+package route;
+
+message Point {
+    int32 latitude = 1;
+    int32 longitude = 2;
+}

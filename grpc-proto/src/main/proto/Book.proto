@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+
+option java_generate_equals_and_hash = true;
+
+option java_package = "com.twang.proto";
+
+option java_generic_services = true;
+
+option java_string_check_utf8 = true;
+
+
+package book;
+
+
+message Book {
+    string book_name = 1;
+    string author = 2;
+    float price = 3;
+    bool sale_status = 4;
+    enum BookType {
+        JAVA = 0;
+        PYTHON = 1;
+        C = 2;
+        CPP = 3;
+        GO = 4;
+    }
+    BookType book_type = 5;
+    string remark = 6;
+}
+
+message SearchRequest {
+    int32 page_no = 1;
+    int32 page_size = 2;
+    string book_name = 3;
+}
+
+message SearchResponse {
+    int32 code = 1;
+    string message = 2;
+    repeated Book books = 3;
+    int32 book_count = 4;
+    reserved 5;
+}
+
+service BookService {
+    rpc queryBook(SearchRequest) returns (SearchResponse) {}
+}
