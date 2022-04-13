@@ -6,6 +6,7 @@ import com.twang.proto.BookServiceGrpc;
 import com.twang.proto.HelloWorldServiceGrpc;
 import com.twang.proto.SearchRequest;
 import com.twang.proto.SearchResponse;
+import com.twang.proto.StreamRequest;
 import com.twang.proto.StreamResponse;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.client.inject.GrpcClient;
@@ -67,6 +68,78 @@ public class BookController {
                 System.out.println("onCompleted =>> " + new Date());
             }
         });
+
+        return "success";
+    }
+
+    @GetMapping("/clientStream")
+    public String clientStream() {
+        StreamObserver<StreamRequest> streamObserver = bookServiceStub.clientStream(new StreamObserver<SearchResponse>() {
+
+            @Override
+            public void onNext(SearchResponse searchResponse) {
+                System.out.println("收到服务端响应 = " + searchResponse.toString());
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                System.out.println("throwable = " + throwable);
+            }
+
+            @Override
+            public void onCompleted() {
+                System.out.println("服务端发送完毕 ===> " + new Date());
+            }
+        });
+
+        for (int i = 0; i < 3; i++) {
+            StreamRequest request = StreamRequest.newBuilder()
+                    .setBookId(100 + i)
+                    .build();
+            System.out.println("客户端发送请求 = " + request.toString());
+            streamObserver.onNext(request);
+        }
+        System.out.println("发送完毕 ===> " + new Date());
+        streamObserver.onCompleted();
+
+        return "success";
+    }
+
+    @GetMapping("/biStream")
+    public String biStream() {
+        StreamObserver<StreamRequest> streamObserver = bookServiceStub.biStream(new StreamObserver<StreamResponse>() {
+
+            @Override
+            public void onNext(StreamResponse streamResponse) {
+                System.out.println("双向流 收到服务端响应 = " + streamResponse.toString());
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                System.out.println("throwable = " + throwable);
+            }
+
+            @Override
+            public void onCompleted() {
+                System.out.println("双向流  服务端发送完毕 ===> " + new Date());
+            }
+        });
+
+        for (int i = 0; i < 3; i++) {
+            StreamRequest request = StreamRequest.newBuilder()
+                    .setBookId(100 + i)
+                    .build();
+            System.out.println("双向流 客户端发送请求 = " + request.toString());
+            streamObserver.onNext(request);
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("双向流 客户端发送请求完毕 ===> " + new Date());
+        streamObserver.onCompleted();
 
         return "success";
     }

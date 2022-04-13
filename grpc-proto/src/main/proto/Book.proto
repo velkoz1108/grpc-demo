@@ -48,8 +48,16 @@ message StreamResponse {
     Book book = 1;
 }
 
+message StreamRequest {
+    int32 book_id = 1;
+}
+
 service BookService {
     rpc queryBook(SearchRequest) returns (SearchResponse) {}
 
     rpc queryBookStream(SearchRequest) returns (stream StreamResponse) {}
+
+    rpc clientStream(stream StreamRequest) returns (SearchResponse) {}
+
+    rpc biStream(stream StreamRequest) returns (stream StreamResponse) {}
 }
