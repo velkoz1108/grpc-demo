@@ -44,6 +44,12 @@ message SearchResponse {
     reserved 5;
 }
 
+message StreamResponse {
+    Book book = 1;
+}
+
 service BookService {
     rpc queryBook(SearchRequest) returns (SearchResponse) {}
+
+    rpc queryBookStream(SearchRequest) returns (stream StreamResponse) {}
 }
