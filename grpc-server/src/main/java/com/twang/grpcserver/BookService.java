@@ -70,6 +70,13 @@ public class BookService extends BookServiceGrpc.BookServiceImplBase {
         responseObserver.onCompleted();
     }
 
+    /**
+     * 如果服务端发多次响应就会报错
+     * Cancelling the stream with status Status{code=INTERNAL, description=Too many responses, cause=null}
+     *
+     * @param responseObserver
+     * @return
+     */
     @Override
     public StreamObserver<StreamRequest> clientStream(StreamObserver<SearchResponse> responseObserver) {
         return new StreamObserver<StreamRequest>() {
